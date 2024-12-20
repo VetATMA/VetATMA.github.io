@@ -14,12 +14,10 @@
     <button id="home-btn">На главную</button>
     <script>
       const homeBtn = document.getElementById('home-btn');
-      const event = new Event('payment-success');
 
       homeBtn &&
         homeBtn.addEventListener('click', () => {
-          window.dispatchEvent(event);
-          // window.history.go(-2);
+          window.history.go(-2);
         });
     </script>
   </body>
