@@ -13,16 +13,13 @@
     <div style="height: 100%; overflow: hidden" id="root">Оплачено</div>
     <button id="home-btn">На главную</button>
     <script>
-      console.log('init');
       const homeBtn = document.getElementById('home-btn');
-
-      console.log('after get element');
-      console.log(homeBtn);
+      const event = new Event('payment-success');
 
       homeBtn &&
         homeBtn.addEventListener('click', () => {
-          console.log('click');
-          window.history.go(-2);
+          window.dispatchEvent(event);
+          // window.history.go(-2);
         });
     </script>
   </body>

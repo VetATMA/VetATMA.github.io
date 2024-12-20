@@ -13,15 +13,10 @@
     <div style="height: 100%; overflow: hidden" id="root">Ошибка</div>
     <button id="home-btn">На главную</button>
     <script>
-      console.log('init');
       const homeBtn = document.getElementById('home-btn');
-
-      console.log('after get element');
-      console.log(homeBtn);
 
       homeBtn &&
         homeBtn.addEventListener('click', () => {
-          console.log('click');
           window.history.go(-2);
         });
     </script>
