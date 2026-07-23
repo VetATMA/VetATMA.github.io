@@ -91,7 +91,7 @@
         }
       })(window.location);
     </script>
-    <script type="module" crossorigin src="/assets/index-DPXtlSpX.js"></script>
+    <script type="module" crossorigin src="/assets/index-Ts16jiom.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-C-XXbQKl.css">
   <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
   <body>
@@ -105,6 +105,22 @@
         /></div
     ></noscript>
     <div style="height: 100%; overflow: hidden" id="root"></div>
+    <!--
+      Официальный скрипт Telegram Mini Apps — САМОХОСТИНГ (public/), НЕ с
+      telegram.org: этот домен недоступен из части российских сетей (проверено
+      2026-07-22: с прод-хоста и с машины разработчика — таймаут, ноль байт).
+      Блокирующий тег на недоступный домен вешал загрузку приложения на
+      десятки секунд — «не открывается».
+
+      Зачем он вообще: @telegram-apps/sdk v1 (1.1.3, июль 2024) сам угадывает
+      канал связи с клиентом и на новых сборках iOS его не находит — отсюда
+      неработающие openLink (T-Pay/СБП), expand, цвет шапки, кнопка «назад».
+      window.Telegram.WebApp — надёжный запасной путь.
+
+      ⚠️ Копия не обновляется автоматически. Обновлять вручную при переезде
+      на SDK v3 (issue #331) или если Telegram сломает совместимость.
+    -->
+    <script src="/telegram-web-app.js"></script>
     <script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>
   </body>
 </html>
