@@ -91,7 +91,7 @@
         }
       })(window.location);
     </script>
-    <script type="module" crossorigin src="/assets/index-W9VFC5VS.js"></script>
+    <script type="module" crossorigin src="/assets/index-CRk_GwWX.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-C-XXbQKl.css">
   <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
   <body>
@@ -105,6 +105,37 @@
         /></div
     ></noscript>
     <div style="height: 100%; overflow: hidden" id="root"></div>
+    <script>
+      // Боевой спасатель от «чёрного экрана»: если React не смонтировался за
+      // 8с (застрявший сервис-воркер / битый кэш — TG-очистка кэша хранилище
+      // SW НЕ трогает, репорт PM 2026-08-10: staging без SW работает, прод с
+      // SW — чёрный экран на том же iPhone), сносим SW+caches и перезагружаемся.
+      // sessionStorage-замок — не больше одной попытки за сессию, без циклов.
+      (function () {
+        try {
+          var KEY = 'veta_boot_rescue';
+          setTimeout(function () {
+            var root = document.getElementById('root');
+            if (root && root.childElementCount > 0) return; // приложение живо
+            if (sessionStorage.getItem(KEY)) return;
+            sessionStorage.setItem(KEY, '1');
+            var done = function () { location.reload(); };
+            var jobs = [];
+            if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+              jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+                return Promise.all(rs.map(function (r) { return r.unregister(); }));
+              }).catch(function () {}));
+            }
+            if (window.caches && caches.keys) {
+              jobs.push(caches.keys().then(function (ks) {
+                return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+              }).catch(function () {}));
+            }
+            Promise.all(jobs).then(done, done);
+          }, 8000);
+        } catch (e) {}
+      })();
+    </script>
     <!--
       Официальный скрипт Telegram Mini Apps — САМОХОСТИНГ (public/), НЕ с
       telegram.org: этот домен недоступен из части российских сетей (проверено
